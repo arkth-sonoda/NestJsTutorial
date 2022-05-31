@@ -1,11 +1,14 @@
 import {
   Column,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BookStatus } from '../books/book-status.enum';
+import { Bookshelf } from './bookshelf.entity';
 import { Like } from './like.entity';
 import { User } from './user.entity';
 
@@ -34,4 +37,8 @@ export class Book {
 
   @OneToMany(() => Like, (like) => like.book)
   likes: Like[];
+
+  @ManyToMany(() => Bookshelf, (bookshelf) => bookshelf.books)
+  @JoinTable()
+  bookshelves: Bookshelf[];
 }
