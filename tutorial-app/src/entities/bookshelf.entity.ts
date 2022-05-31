@@ -1,31 +1,28 @@
 import {
-  Column,
   Entity,
+  JoinColumn,
   ManyToMany,
-  ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Book } from './book.entity';
 import { User } from './user.entity';
 
 @Entity()
-export class Like {
+export class Bookshelf {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @ManyToOne(() => User, (user) => user.likes, {
+  category: string;
+
+  @OneToOne(() => User, (user) => user.bookshelf, {
     onDelete: 'CASCADE',
   })
+  @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   user: User;
 
-  @Column()
-  userId: string;
-
-  @ManyToOne(() => Book, (book) => book.likes, {
+  @ManyToMany(() => Book, (book) => book.bookshelves, {
     onDelete: 'CASCADE',
   })
-  book: Book;
-
-  @Column()
-  bookId: string;
+  books: Book[];
 }
